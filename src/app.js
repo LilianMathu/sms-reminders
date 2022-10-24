@@ -5,6 +5,7 @@ import morgan from "morgan";
 import path from "path";
 import config from "../config";
 import mongoose from "mongoose";
+import userRoute from "./routes/userRoute";
 
 const app = express();
 
@@ -38,5 +39,6 @@ const connectDB = async () => {
 connectDB();
 
 // Install routes
+app.use(userRoute);
 
 export default app;
