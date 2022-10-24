@@ -26,7 +26,7 @@ const userController = {
     }
   },
 
-  listUser: async (req, res) => {
+  listUsers: async (req, res) => {
     try {
       const users = await User.find({});
 
