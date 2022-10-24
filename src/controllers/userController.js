@@ -38,6 +38,19 @@ const userController = {
       res.status(500).json({ message: "Failed to get /", error });
     }
   },
+
+  listOneUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      res.status(200).json({
+        user
+      })
+
+    } catch (error) {
+      res.status(404).send("Not found!")
+    }
+  }
 };
 
 export default userController;
