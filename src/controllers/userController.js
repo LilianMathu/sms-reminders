@@ -99,7 +99,8 @@ const userController = {
         });
       }
     } catch (error) {
-      res.status(500).json({
+      res.status(304).json({
+        message: "Not modified!",
         error,
       });
     }
