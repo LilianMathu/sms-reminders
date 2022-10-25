@@ -5,7 +5,9 @@ const router = Router();
 
 // Routes
 router.post("/api/auth/register", userController.register);
-router.get("/api/auth/register", userController.listUsers);
-router.get("/api/auth/register/:id", userController.listOneUser);
+router.get("/api/auth/users", userController.listUsers);
+router.get("/api/auth/user/:id", userController.listOneUser);
+router.delete("/api/auth/user/:id", userController.deleteUser);
+router.patch("/api/auth/user/:id", userController.updateUser);
 
 export default router;

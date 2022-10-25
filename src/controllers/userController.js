@@ -22,7 +22,10 @@ const userController = {
       const saveUser = await user.save();
       res.status(201).json({ message: "User saved!", saveUser });
     } catch (error) {
-      res.status(500).json({ message: "Failed to save user!", error });
+      res.status(500).json({
+        message: "Failed to save user!",
+        error,
+      });
     }
   },
 
@@ -30,12 +33,18 @@ const userController = {
     try {
       const users = await User.find({});
 
-      res.status(200).json({
-        count: users.length,
-        users,
-      });
+      if (users.length < 1) {
+        return res.status(404).json({ message: "No users found!" });
+      } else {
+        return res.status(200).json({
+          count: users.length,
+          users,
+        });
+      }
     } catch (error) {
-      res.status(500).json({ message: "Failed to get /", error });
+      res.status(500).json({
+        error,
+      });
     }
   },
 
@@ -43,14 +52,58 @@ const userController = {
     try {
       const user = await User.findById(req.params.id);
 
-      res.status(200).json({
-        user
-      })
-
+      if (!user) {
+        return res.status(404).json({ message: "No user found!" });
+      } else {
+        return res.status(200).json({
+          user,
+        });
+      }
     } catch (error) {
-      res.status(404).send("Not found!")
+      res.status(500).json({
+        error,
+      });
     }
-  }
+  },
+
+  deleteUser: async (req, res) => {
+    try {
+      const user = await User.findByIdAndDelete(req.params.id);
+
+      if (!user) {
+        return res.status(404).json({ message: "No user found!" });
+      } else {
+        return res.status(200).json({
+          message: "Deleted successfully!",
+          user,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        error,
+      });
+    }
+  },
+
+  updateUser: async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "No user found!" });
+      } else {
+        res.status(200).json({
+          user,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        error,
+      });
+    }
+  },
 };
 
 export default userController;
