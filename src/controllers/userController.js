@@ -1,4 +1,7 @@
 import User from "../models/userModel";
+import { generateOtp, addMinutes, isExpired } from "../utils/otp";
+import Otp from "../models/OtpModel";
+import sendMessage from "../utils/sms";
 
 const userController = {
   register: async (req, res) => {
@@ -19,7 +22,18 @@ const userController = {
     //   Save user
     try {
       const user = new User({ name, phone });
+
+      const userOtp = generateOtp();
+
+      const expiry = addMinutes(10);
+
       const saveUser = await user.save();
+
+      await Otp.create({ otp: userOtp, expiry, user: saveUser._id });
+
+      // Send OTP via Africastkng
+      await sendMessage(phone, `Your OTP is ${userOtp}`);
+
       res.status(201).json({ message: "User saved!", saveUser });
     } catch (error) {
       res.status(500).json({

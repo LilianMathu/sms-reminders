@@ -1,4 +1,4 @@
-import { Schema, model, trusted } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -10,12 +10,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    active: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,
-  },
-  {
-    collection: "Users",
   }
 );
 
